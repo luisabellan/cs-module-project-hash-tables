@@ -14,7 +14,7 @@ MIN_CAPACITY = 8
 
 class HashTable:
     """
-    A hash table that with `capacity` buckets
+    A hash table with `capacity` buckets
     that accepts string keys
 
     Implement this.
@@ -22,6 +22,9 @@ class HashTable:
 
     def __init__(self, capacity):
         # Your code here
+        self.capacity = capacity
+        self.hash_table = [[] for _ in range(self.capacity)]
+        
 
 
     def get_num_slots(self):
@@ -46,7 +49,7 @@ class HashTable:
         # Your code here
 
 
-    def fnv1(self, key):
+    def fnv1(self, string):
         """
         FNV-1 Hash, 64-bit
 
@@ -54,28 +57,27 @@ class HashTable:
        Returns: The FNV-1 hash of a given string. 
         """
         #Constants
-        FNV_prime = 1099511628211
+        prime = 1099511628211
         offset_basis = 14695981039346656037
 
         #FNV-1a Hash Function
-        hash = offset_basis + seed
+        my_hash = offset_basis
         for char in string:
-            hash = hash * FNV_prime
-            hash = hash ^ ord(char)
-        return hash
+            my_hash = my_hash * prime
+            my_hash = my_hash ^ ord(char)
+        return my_hash
 
 
-    def djb2(self, key):
+    def djb2(self, string):
         """
         DJB2 hash, 32-bit
 
         Implement this, and/or FNV-1.
         """
-        hash = 5381
-        for c in key:
-            hash = (hash * 33) + ord(c)
-        return hash
-        
+        prime = 5381
+        for c in string:
+            my_hash = (prime * 33) + ord(c)
+        return my_hash
     
 
 
@@ -96,8 +98,17 @@ class HashTable:
         Implement this.
         """
         # Your code here
+        if self.get(key) == None:
+            self.hash_table[self.hash_index(key)].append((key,value))
+        """
+        - fix this to pass test_hash_table_pution_overwrites_correctly case in test function in test_hashtable_no_collisions.py  -
+         else:
+            position = self.hash_index(key)
+            self.delete(position)
+            self.hash_table[self.hash_index(key)].insert(position,(key,value)) """
 
-
+        
+        
     def delete(self, key):
         """
         Remove the value stored with the given key.
@@ -107,6 +118,9 @@ class HashTable:
         Implement this.
         """
         # Your code here
+        #self.hash_table[self.hash_index(key)].append((key,None))
+        del self.hash_table[self.hash_index(key)]
+
 
 
     def get(self, key):
@@ -117,7 +131,16 @@ class HashTable:
 
         Implement this.
         """
-        # Your code here
+        
+        
+        # self.hash_table = [] * MIN_CAPACITY
+        # self.hash_index(key)
+        for k,v in self.hash_table[self.hash_index(key)]:
+            if k == key:
+                return v
+            return None 
+       
+
 
 
     def resize(self, new_capacity):
