@@ -1,5 +1,5 @@
 # Hash Tables
-
+started
 ## Day 1
 
 Task: Implement a basic hash table without collision resolution.
