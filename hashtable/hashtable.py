@@ -51,9 +51,18 @@ class HashTable:
         FNV-1 Hash, 64-bit
 
         Implement this, and/or DJB2.
+       Returns: The FNV-1 hash of a given string. 
         """
+        #Constants
+        FNV_prime = 1099511628211
+        offset_basis = 14695981039346656037
 
-        # Your code here
+        #FNV-1a Hash Function
+        hash = offset_basis + seed
+        for char in string:
+            hash = hash * FNV_prime
+            hash = hash ^ ord(char)
+        return hash
 
 
     def djb2(self, key):
@@ -62,7 +71,12 @@ class HashTable:
 
         Implement this, and/or FNV-1.
         """
-        # Your code here
+        hash = 5381
+        for c in key:
+            hash = (hash * 33) + ord(c)
+        return hash
+        
+    
 
 
     def hash_index(self, key):
