@@ -65,6 +65,7 @@ class HashTable:
         for char in string:
             my_hash = my_hash * prime
             my_hash = my_hash ^ ord(char)
+            my_hash &= 0xffffffffffffffff
         return my_hash
 
 
@@ -77,6 +78,7 @@ class HashTable:
         prime = 5381
         for c in string:
             my_hash = (prime * 33) + ord(c)
+            my_hash &= 0xffffffff
         return my_hash
     
 
@@ -98,8 +100,8 @@ class HashTable:
         Implement this.
         """
         # Your code here
-        if self.get(key) == None:
-            self.hash_table[self.hash_index(key)].append((key,value))
+        #if self.get(key) == None:
+        self.hash_table[self.hash_index(key)] = (key,value)
         """
         - fix this to pass test_hash_table_pution_overwrites_correctly case in test function in test_hashtable_no_collisions.py  -
          else:
@@ -135,10 +137,16 @@ class HashTable:
         
         # self.hash_table = [] * MIN_CAPACITY
         # self.hash_index(key)
-        for k,v in self.hash_table[self.hash_index(key)]:
-            if k == key:
-                return v
-            return None 
+        #for k,v in self.hash_table[self.hash_index(key)]:
+        #    if k == key:
+        #        return v
+        #    return None 
+        
+        if self.hash_table[self.hash_index(key)]: 
+            [k,v] = self.hash_table[self.hash_index(key)]
+            return v
+        return None
+
        
 
 
