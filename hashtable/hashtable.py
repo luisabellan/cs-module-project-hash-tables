@@ -60,7 +60,7 @@ class HashTable:
         prime = 1099511628211
         offset_basis = 14695981039346656037
 
-        #FNV-1a Hash Function
+        #FNV-1 Hash Function
         my_hash = offset_basis
         for char in string:
             my_hash = my_hash * prime
