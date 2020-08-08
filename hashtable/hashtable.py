@@ -49,7 +49,7 @@ class HashTable:
         # Your code here
 
 
-    def fnv1(self, string):
+    def fnv1(self, key):
         """
         FNV-1 Hash, 64-bit
 
@@ -62,21 +62,23 @@ class HashTable:
 
         #FNV-1 Hash Function
         my_hash = offset_basis
-        for char in string:
-            my_hash = my_hash * prime
+        for char in key:
             my_hash = my_hash ^ ord(char)
+            my_hash = my_hash * prime
+            my_hash &= 0xffffffffffffffff
         return my_hash
 
 
-    def djb2(self, string):
+    def djb2(self, key):
         """
         DJB2 hash, 32-bit
 
         Implement this, and/or FNV-1.
         """
         prime = 5381
-        for c in string:
+        for c in key:
             my_hash = (prime * 33) + ord(c)
+            my_hash &= 0xffffffff
         return my_hash
     
 
@@ -86,8 +88,8 @@ class HashTable:
         Take an arbitrary key and return a valid integer index
         between within the storage capacity of the hash table.
         """
-        #return self.fnv1(key) % self.capacity
-        return self.djb2(key) % self.capacity
+        return self.fnv1(key) % self.capacity
+        #return self.djb2(key) % self.capacity
 
     def put(self, key, value):
         """
@@ -98,8 +100,8 @@ class HashTable:
         Implement this.
         """
         # Your code here
-        if self.get(key) == None:
-            self.hash_table[self.hash_index(key)].append((key,value))
+        #if self.get(key) == None:
+        self.hash_table[self.hash_index(key)] = (key,value)
         """
         - fix this to pass test_hash_table_pution_overwrites_correctly case in test function in test_hashtable_no_collisions.py  -
          else:
@@ -135,10 +137,16 @@ class HashTable:
         
         # self.hash_table = [] * MIN_CAPACITY
         # self.hash_index(key)
-        for k,v in self.hash_table[self.hash_index(key)]:
-            if k == key:
-                return v
-            return None 
+        #for k,v in self.hash_table[self.hash_index(key)]:
+        #    if k == key:
+        #        return v
+        #    return None 
+        
+        if self.hash_table[self.hash_index(key)]: 
+            [k,v] = self.hash_table[self.hash_index(key)]
+            return v
+        return None
+
        
 
 
