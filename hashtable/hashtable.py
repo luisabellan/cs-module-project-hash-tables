@@ -121,22 +121,21 @@ class HashTable:
         #self.buckets[index] = (key,value)
         # Go to the node corresponding to the hash
         node = self.buckets[index]
-        #if node is None: # we only need this if we don't want to be able to overwrite it
-        # Create node, add it, return
+        if node == None: # we only need this if we don't want to be able to overwrite it
+            # Create node, add it, return
             self.size += 1
-            self.buckets[index] = HashTableEntry(key, value)
+            node.key = key
+            node.value = value
             self.rehash_if_needed()
-            return
- 
-        """  else:
-            for pair in self.buckets[index]:
-                self.length += 1
-                if pair[0] == key:
-                    pair[1] = value
-                    return True
-            self.buckets[index].append([key,value])
+            return 
+        # TODO fix this
+        else:
+
+            self.size += 1
+            node.next.key = key
+            node.next.value = value
             self.rehash_if_needed()
-            return  """ 
+            return 
 
 		# 4. Iterate to the end of the linked list at provided index
         prev = node
