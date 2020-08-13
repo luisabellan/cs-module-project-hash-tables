@@ -110,52 +110,27 @@ class HashTable:
         Implement this.
         """
         # Your code here
-        #if self.get(key) == None:
-        
-        
-        # 1. Increment size
-        self.size += 1
+       
 
-        # 2. Compute index of key
+        # find index 
         index = self.hash_index(key)
-        #self.buckets[index] = (key,value)
-        # Go to the node corresponding to the hash
+
+        #create hashtable
+        hashtable = HashTableEntry(key, value)
+
+        # node at index
         node = self.buckets[index]
-        if node == None: # we only need this if we don't want to be able to overwrite it
-            # Create node, add it, return
-            self.size += 1
-            node.key = key
-            node.value = value
-            self.rehash_if_needed()
-            return 
-        # TODO fix this
+
+        # if node at index isn't None add to the begining of LL and move the previous one to next
+        if node is not None:
+            self.buckets[index] = hashtable
+            self.buckets[index].next = node
+        # else add to bucket and increment size
         else:
-
+            self.buckets[index] = hashtable
             self.size += 1
-            node.next.key = key
-            node.next.value = value
-            self.rehash_if_needed()
-            return 
-
-		# 4. Iterate to the end of the linked list at provided index
-        prev = node
-        while node is not None:
-            prev = node
-            node = node.next
-        # Add a new node at the end of the list with provided key/value
-        prev.next = HashTableEntry(key, value)
 
 
-
-        """
-        - fix this to pass test_buckets_pution_overwrites_correctly case in test function in test_hashtable_no_collisions.py  -
-         else:
-            position = self.hash_index(key)
-            self.delete(position)
-            self.buckets[self.hash_index(key)].insert(position,(key,value)) """
-
-        
-        
     def delete(self, key):
         """
         Remove the value stored with the given key.
@@ -174,24 +149,23 @@ class HashTable:
         node = self.buckets[index]
         prev = None
         # 2. Iterate to the requested node
-        while node is not None and node.key != key:
+
+        if node.key == key:
+            self.buckets[index] = node.next
+            return
+
+        while node is not None:
+            if node.key == key:
+                prev.next = node.next
+                self.buckets[index].next = None
+                return
+                
+            
             prev = node
             node = node.next
-		# Now, node is either the requested node or none
-        if node is None:
-            # 3. Key not found
-            return None
-        else:
-			# 4. The key was found.
-            self.size -= 1
-            result = node.value
-			# Delete this element in linked list
-            if prev is None:
-                self.buckets[index] = node.next # May be None, or the next match
-            else:
-                prev.next = prev.next.next # LinkedList delete by skipping over
-			# Return the deleted result
-            return result
+        
+        
+	
 
 
 
@@ -223,15 +197,13 @@ class HashTable:
         # 2. Go to first node in list at bucket
         node = self.buckets[index]
         # 3. Traverse the linked list at this node
-        while node is not None and node.key != key:
-            node = node.next
-        # 4. Now, node is the requested key/value pair or None
-        if node is None:
-            # Not found
-            return None
-        else:
-            # Found - return the data value
-            return node.value
+        while node is not None:
+            # if found return node value
+            if node.key == key:
+                return node.value
+            else:
+                node = node.next
+        
             
     def resize(self, new_capacity):
         """
@@ -241,19 +213,21 @@ class HashTable:
         Implement this.
         """
         # Your code here
+        # save old buckets
+        old_buckets = self.buckets
          # Create new hashmap with new capacity 
-        new_hashtable = HashTable(new_capacity)
+        self.capacity = new_capacity
+        self.buckets = [None] * new_capacity
         # Insert all the keys in the new hashmap
-        for key in self.keyslist:
-            value = self.get(key)
-            new_hashtable.put(key, value)
+        for key in old_buckets:
+            if key:
+                curr = key
+            while curr:
+                self.put(curr.key, curr.value)
+                curr = curr.next
 
-        # Copy all the fields of the new hashmap to this hashmap
-        self.capacity = new_hashtable.capacity
-        self.max_load_factor = new_hashtable.max_load_factor
-        self.size = new_hashtable.size
-        self.buckets = new_hashtable.buckets
-        self.keyslist = new_hashtable.keyslist
+       
+       
 
 
 

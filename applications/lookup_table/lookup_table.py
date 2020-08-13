@@ -17,7 +17,7 @@ def create_table():
 
     for x in range(2, 14):
         for y in range(3, 6):
-            table[x, y] = ((math.factorial(math.pow(x, y))) //
+            table[(x, y)] = ((math.factorial(math.pow(x, y))) //
                         (x + y)) % 982451653 
 
     return table
