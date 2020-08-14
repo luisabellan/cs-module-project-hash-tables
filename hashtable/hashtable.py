@@ -121,7 +121,7 @@ class HashTable:
         # node at index
         node = self.buckets[index]
 
-        # if node at index isn't None add to the begining of LL and move the previous one to next
+        # if node at index isn't None add to the beginning of LL and move the previous one to next
         if node is not None:
             self.buckets[index] = hashtable
             self.buckets[index].next = node
