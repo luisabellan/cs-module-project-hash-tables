@@ -3,7 +3,8 @@
 
 expensive_seq_cache = {}
 
-
+def calculate(x,y,z):
+    return expensive_seq(x-1,y+1,z) + expensive_seq(x-2,y+2,z*2) + expensive_seq(x-3,y+3,z*3)
 
 def expensive_seq(x,y,z):
     input = (x,y,z)
@@ -13,7 +14,7 @@ def expensive_seq(x,y,z):
     if x <= 0:
         value = y + z
     elif x >  0:
-        value = expensive_seq(x-1,y+1,z) + expensive_seq(x-2,y+2,z*2) + expensive_seq(x-3,y+3,z*3)
+        value = calculate(x,y,z)
     expensive_seq_cache[input] = value
     return value
 
