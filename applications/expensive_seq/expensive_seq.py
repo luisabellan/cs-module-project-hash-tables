@@ -3,10 +3,12 @@
 
 expensive_seq_cache = {}
 
+
+
 def expensive_seq(x,y,z):
     input = (x,y,z)
     if input in expensive_seq_cache:
-        return expensive_seq_cache[(input)]
+        return expensive_seq_cache[input]
    
     if x <= 0:
         value = y + z
