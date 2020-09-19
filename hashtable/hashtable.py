@@ -139,10 +139,7 @@ class HashTable:
 
         Implement this.
         """
-        # Your code here
-        #self.buckets[self.hash_index(key)].append((key,None))
-
-        # del self.buckets[self.hash_index(key)]
+      
 
         	# 1. Compute hash
         index = self.hash_index(key)
@@ -178,19 +175,7 @@ class HashTable:
         Implement this.
         """
         
-        
-        # self.buckets = [] * MIN_CAPACITY
-        # self.hash_index(key)
-        #for k,v in self.buckets[self.hash_index(key)]:
-        #    if k == key:
-        #        return v
-        #    return None 
-        
-        #if self.buckets[self.hash_index(key)]: 
-        #    [k,v] = self.buckets[self.hash_index(key)]
-        #    return v
-        #return None
-
+       
 
         # 1. Compute hash
         index = self.hash_index(key)
